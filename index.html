@@ -1,23 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Mini App</title>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Equipment Refining</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
+
     body {
-      font-family: sans-serif;
-      text-align: center;
-      padding-top: 50px;
+      font-family: "Inter", sans-serif;
+      background: white;
+      margin: 0;
+      padding: 0;
     }
-    button {
+
+    /* ... all your existing styles remain unchanged ... */
+
+    .close-button {
+      margin-top: 40px;
       padding: 10px 20px;
       font-size: 16px;
+      background-color: #6b7fc9;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(107, 127, 201, 0.3);
+      transition: background-color 0.2s;
+    }
+
+    .close-button:hover {
+      background-color: #5a6ab0;
     }
   </style>
 </head>
-<body>
-  <h1>Hello from Mini App!</h1>
-  <button onclick="Telegram.WebApp.close()">Close</button>
+<body class="flex flex-col items-center justify-start pt-10 px-4 bg-white min-h-screen">
+  <h1 class="title-text mb-2">Equipment Refining</h1>
+
+  <div class="circle-container" aria-label="Concentric glowing circles with a plus icon in the center representing equipment refining">
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle2-copy"></div>
+    <div class="circle circle3"></div>
+    <div class="circle circle3-2"></div>
+    <div class="plus-container" role="img" aria-label="Plus icon in a rounded square">
+      <div class="plus-icon"></div>
+    </div>
+  </div>
+
+  <div class="bottom-text-container">
+    <div class="line" aria-hidden="true"></div>
+    <span>Please choose a gear to refine</span>
+    <div class="line" aria-hidden="true"></div>
+  </div>
+
+  <button class="close-button" onclick="Telegram.WebApp.close()">Close</button>
 
   <script>
     Telegram.WebApp.ready();
