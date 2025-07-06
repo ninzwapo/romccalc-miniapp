@@ -1,239 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Equipment Refining</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Equipment Refining</title>
 
-    <!-- Telegram WebApp SDK -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap");
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+      body {
+        font-family: "Inter", sans-serif;
+        background: white;
+        margin: 0;
+        padding: 0;
+      }
 
-    <!-- Font Awesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-      rel="stylesheet"
-    />
+      .circle-container {
+        position: relative;
+        width: 280px;
+        height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 40px;
+      }
 
-    <!-- Google Fonts -->
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
+      .circle {
+        position: absolute;
+        border-radius: 50%;
+        animation: rotate 20s linear infinite;
+      }
 
-      body {
-        font-family: "Inter", sans-serif;
-        background: white;
-        margin: 0;
-        padding: 0;
-      }
+      .circle1 {
+        width: 280px;
+        height: 280px;
+        background: radial-gradient(circle, rgba(107, 127, 201, 0.25) 0%, rgba(107, 127, 201, 0.05) 50%, rgba(107, 127, 201, 0) 90%);
+        box-shadow: 0 0 60px 20px rgba(107, 127, 201, 0.3), inset 0 0 40px 10px rgba(107, 127, 201, 0.2);
+        z-index: 0;
+      }
 
-      /* --- Circles and Glow Styles (same as provided) --- */
-      .circle-container {
-        position: relative;
-        width: 280px;
-        height: 280px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 40px;
-      }
+      .circle2 {
+        width: 220px;
+        height: 220px;
+        top: 30px;
+        left: 30px;
+        box-shadow: 0 0 30px 5px rgba(107, 127, 201, 0.4);
+        background: radial-gradient(circle, rgba(107, 127, 201, 0.3) 0%, rgba(107, 127, 201, 0) 70%);
+        z-index: 1;
+        border-radius: 50%;
+        position: absolute;
+      }
 
-      .circle {
-        position: absolute;
-        border-radius: 50%;
-        animation: rotate 20s linear infinite;
-      }
+      .circle2-copy {
+        width: 176px;
+        height: 176px;
+        top: calc(30px + (220px - 176px) / 2);
+        left: calc(30px + (220px - 176px) / 2);
+        box-shadow: 0 0 24px 4px rgba(107, 127, 201, 0.4);
+        background: radial-gradient(circle, rgba(107, 127, 201, 0.3) 0%, rgba(107, 127, 201, 0) 70%);
+        border-radius: 50%;
+        position: absolute;
+        animation: rotate 20s linear infinite reverse;
+        z-index: 2;
+      }
 
-      .circle1 {
-        width: 280px;
-        height: 280px;
-        background: radial-gradient(circle, rgba(107, 127, 201, 0.25) 0%, rgba(107, 127, 201, 0.05) 50%, rgba(107, 127, 201, 0) 90%);
-        box-shadow: 0 0 60px 20px rgba(107, 127, 201, 0.3), inset 0 0 40px 10px rgba(107, 127, 201, 0.2);
-        z-index: 0;
-      }
+      .circle3,
+      .circle3-2 {
+        width: 160px;
+        height: 160px;
+        background: rgba(107, 127, 201, 0.3);
+        clip-path: polygon(50% 0%, 90.45% 34.55%, 73.54% 90.45%, 26.46% 90.45%, 9.55% 34.55%);
+        box-shadow: 0 0 20px 3px rgba(107, 127, 201, 0.5);
+        position: absolute;
+        top: calc(30px + 30px);
+        left: calc(30px + 30px);
+        z-index: 3;
+      }
 
-      .circle2 {
-        width: 220px;
-        height: 220px;
-        top: 30px;
-        left: 30px;
-        box-shadow: 0 0 30px 5px rgba(107, 127, 201, 0.4);
-        background: radial-gradient(circle, rgba(107, 127, 201, 0.3) 0%, rgba(107, 127, 201, 0) 70%);
-        z-index: 1;
-        border-radius: 50%;
-        position: absolute;
-      }
+      .circle3 {
+        animation: rotate 20s linear infinite;
+      }
 
-      .circle2-copy {
-        width: 176px;
-        height: 176px;
-        top: calc(30px + (220px - 176px) / 2);
-        left: calc(30px + (220px - 176px) / 2);
-        box-shadow: 0 0 24px 4px rgba(107, 127, 201, 0.4);
-        background: radial-gradient(circle, rgba(107, 127, 201, 0.3) 0%, rgba(107, 127, 201, 0) 70%);
-        border-radius: 50%;
-        position: absolute;
-        animation: rotate 20s linear infinite reverse;
-        z-index: 2;
-      }
+      .circle3-2 {
+        animation: rotate-reverse 20s linear infinite;
+      }
 
-      .circle3,
-      .circle3-2 {
-        width: 160px;
-        height: 160px;
-        background: rgba(107, 127, 201, 0.3);
-        clip-path: polygon(50% 0%, 90.45% 34.55%, 73.54% 90.45%, 26.46% 90.45%, 9.55% 34.55%);
-        box-shadow: 0 0 20px 3px rgba(107, 127, 201, 0.5);
-        position: absolute;
-        top: calc(30px + 30px);
-        left: calc(30px + 30px);
-        z-index: 3;
-      }
+      @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
 
-      .circle3 {
-        animation: rotate 20s linear infinite;
-      }
+      @keyframes rotate-reverse {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(-360deg); }
+      }
 
-      .circle3-2 {
-        animation: rotate-reverse 20s linear infinite;
-      }
+      .plus-container {
+        position: relative;
+        width: 96px;
+        height: 96px;
+        background: #d9e1f2;
+        border-radius: 16px;
+        box-shadow: inset 0 0 10px #a3b0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        cursor: pointer;
+      }
 
-      @keyframes rotate {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
+      .plus-icon {
+        position: relative;
+        width: 48px;
+        height: 48px;
+      }
 
-      @keyframes rotate-reverse {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(-360deg);
-        }
-      }
+      .plus-icon:before,
+      .plus-icon:after {
+        content: "";
+        position: absolute;
+        background-color: #6b7fc9;
+        border-radius: 4px;
+      }
 
-      .plus-container {
-        position: relative;
-        width: 96px;
-        height: 96px;
-        background: #d9e1f2;
-        border-radius: 16px;
-        box-shadow: inset 0 0 10px #a3b0e0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10;
-      }
+      .plus-icon:before {
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 8px;
+        margin-top: -4px;
+      }
 
-      .plus-icon {
-        position: relative;
-        width: 48px;
-        height: 48px;
-      }
+      .plus-icon:after {
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 8px;
+        margin-left: -4px;
+      }
 
-      .plus-icon:before,
-      .plus-icon:after {
-        content: "";
-        position: absolute;
-        background-color: #6b7fc9;
-        border-radius: 4px;
-      }
+      .font-nunito {
+        font-family: 'Nunito', sans-serif;
+      }
+    </style>
+  </head>
 
-      .plus-icon:before {
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 8px;
-        margin-top: -4px;
-      }
+  <body class="bg-white">
 
-      .plus-icon:after {
-        left: 50%;
-        top: 0;
-        bottom: 0;
-        width: 8px;
-        margin-left: -4px;
-      }
+    <!-- SCREEN 1 -->
+    <div id="screen1" class="flex flex-col items-center justify-center min-h-screen px-4">
+      <h1 class="text-[#6b7fc9] font-medium text-sm mt-6 mb-2">Equipment Refining</h1>
 
-      .title-text {
-        color: #6b7fc9;
-        font-weight: 500;
-        font-size: 14px;
-        text-align: center;
-        user-select: none;
-        margin: 0;
-      }
+      <div class="circle-container">
+        <div class="circle circle1"></div>
+        <div class="circle circle2"></div>
+        <div class="circle2-copy"></div>
+        <div class="circle circle3"></div>
+        <div class="circle circle3-2"></div>
+        <div class="plus-container" onclick="goToScreen2()">
+          <div class="plus-icon"></div>
+        </div>
+      </div>
 
-      .bottom-text-container {
-        margin-top: 80px;
-        max-width: 280px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #6b7fc9;
-        font-weight: 500;
-        font-size: 14px;
-        user-select: none;
-      }
+      <div class="mt-20 flex items-center w-72 text-[#6b7fc9] text-sm font-medium mx-auto">
+        <div class="flex-grow border-t border-dotted border-[#6b7fc9]"></div>
+        <span class="mx-4">Please choose a gear to refine</span>
+        <div class="flex-grow border-t border-dotted border-[#6b7fc9]"></div>
+      </div>
+    </div>
 
-      .bottom-text-container .line {
-        border-top: 1px dotted #6b7fc9;
-        flex-grow: 1;
-      }
+    <!-- SCREEN 2 -->
+    <div id="screen2" class="hidden flex flex-col min-h-screen px-4 pt-6">
+      <!-- Horizontal Top Row -->
+      <div class="flex space-x-2 items-center mb-4">
+        <!-- All (Dropdown) -->
+        <select class="px-4 py-2 rounded-xl border border-[#cbd2e1] bg-white text-[#2a5ea8]">
+          <option selected>All</option>
+          <option>Weapon</option>
+          <option>Armor</option>
+        </select>
 
-      .bottom-text-container span {
-        margin: 0 12px;
-        white-space: nowrap;
-      }
-    </style>
-  </head>
+        <!-- Select Equipment (Plain Text) -->
+        <span class="text-[#6b7fc9] font-medium text-sm">Select Equipment</span>
 
-  <body
-    class="flex flex-col items-center justify-start pt-10 px-4 bg-white min-h-screen"
-  >
-    <h1 class="title-text mb-2">Equipment Refining</h1>
+        <!-- Class (Dropdown) -->
+        <select class="px-4 py-2 rounded-xl border border-[#cbd2e1] bg-white text-[#2a5ea8]">
+          <option selected disabled>Class</option>
+          <option>Mage</option>
+          <option>Swordsman</option>
+        </select>
+      </div>
 
-    <div
-      class="circle-container"
-      aria-label="Concentric glowing circles with a plus icon in the center"
-    >
-      <div class="circle circle1"></div>
-      <div class="circle circle2"></div>
-      <div class="circle2-copy"></div>
-      <div class="circle circle3"></div>
-      <div class="circle circle3-2"></div>
-      <div
-        class="plus-container"
-        role="img"
-        aria-label="Plus icon in a rounded square"
-      >
-        <div class="plus-icon"></div>
-      </div>
-    </div>
+      <!-- You can add more UI below later -->
+    </div>
 
-    <div class="bottom-text-container">
-      <div class="line" aria-hidden="true"></div>
-      <span>Please choose a gear to refine</span>
-      <div class="line" aria-hidden="true"></div>
-    </div>
+    <script>
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
 
-    <button
-      onclick="Telegram.WebApp.close()"
-      class="mt-10 px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow"
-    >
-      Close
-    </button>
-
-    <script>
-      Telegram.WebApp.ready();
-      Telegram.WebApp.expand();
-    </script>
-  </body>
+      function goToScreen2() {
+        document.getElementById('screen1').classList.add('hidden');
+        document.getElementById('screen2').classList.remove('hidden');
+      }
+    </script>
+  </body>
 </html>
-
