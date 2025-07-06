@@ -12,14 +12,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Font Awesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
 
     <!-- Google Fonts -->
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
+      @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
 
       body {
         font-family: "Inter", sans-serif;
@@ -28,7 +26,6 @@
         padding: 0;
       }
 
-      /* --- Circles and Glow Styles (same as provided) --- */
       .circle-container {
         position: relative;
         width: 280px;
@@ -100,21 +97,13 @@
       }
 
       @keyframes rotate {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
 
       @keyframes rotate-reverse {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(-360deg);
-        }
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(-360deg); }
       }
 
       .plus-container {
@@ -128,6 +117,7 @@
         align-items: center;
         justify-content: center;
         z-index: 10;
+        cursor: pointer;
       }
 
       .plus-icon {
@@ -191,28 +181,28 @@
         margin: 0 12px;
         white-space: nowrap;
       }
+
+      .bg-custom {
+        background-color: #f7f9fc;
+        background-image: repeating-linear-gradient(0deg, #f7f9fc, #f7f9fc 2px, #e1e6f0 2px, #e1e6f0 4px);
+      }
+
+      .font-nunito {
+        font-family: 'Nunito', sans-serif;
+      }
     </style>
   </head>
 
-  <body
-    class="flex flex-col items-center justify-start pt-10 px-4 bg-white min-h-screen"
-  >
+  <body class="flex flex-col items-center justify-start pt-10 px-4 bg-white min-h-screen">
     <h1 class="title-text mb-2">Equipment Refining</h1>
 
-    <div
-      class="circle-container"
-      aria-label="Concentric glowing circles with a plus icon in the center"
-    >
+    <div class="circle-container" aria-label="Glowing circle">
       <div class="circle circle1"></div>
       <div class="circle circle2"></div>
       <div class="circle2-copy"></div>
       <div class="circle circle3"></div>
       <div class="circle circle3-2"></div>
-      <div
-        class="plus-container"
-        role="img"
-        aria-label="Plus icon in a rounded square"
-      >
+      <div class="plus-container" onclick="toggleDropdownUI()">
         <div class="plus-icon"></div>
       </div>
     </div>
@@ -223,16 +213,82 @@
       <div class="line" aria-hidden="true"></div>
     </div>
 
-    <button
-      onclick="Telegram.WebApp.close()"
-      class="mt-10 px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow"
-    >
+    <!-- Dropdown Section (Hidden initially) -->
+    <div id="dropdownSection" class="hidden mt-6 flex space-x-4 items-center bg-custom rounded-3xl px-6 py-4 shadow-[0_0_15px_rgba(0,0,0,0.1)]">
+      <!-- Equipment Dropdown -->
+      <div class="relative inline-block">
+        <div id="equipmentButton" onclick="toggleDropdown('equipmentMenu', 'equipmentButton')" class="flex items-center space-x-2 bg-white border border-[#cbd2e1] rounded-2xl px-6 py-2 shadow font-nunito text-[#2a5ea8] text-lg leading-6 cursor-pointer select-none">
+          <span>All</span>
+          <i class="fas fa-caret-down text-[#a3b1d1]"></i>
+        </div>
+        <ul id="equipmentMenu" class="hidden absolute top-full left-0 mt-1 w-48 bg-white rounded-2xl border border-[#cbd2e1] shadow py-4 flex flex-col space-y-4 z-10 font-nunito text-[#2a5ea8] text-lg">
+          <li class="px-8 cursor-pointer hover:underline" onclick="selectOption('equipmentButton', 'Weapons', 'equipmentMenu')">Weapons</li>
+          <li class="px-8 cursor-pointer hover:underline" onclick="selectOption('equipmentButton', 'Armor', 'equipmentMenu')">Armor</li>
+        </ul>
+      </div>
+
+      <div class="font-nunito font-bold text-[#2a5ea8] text-lg px-3 py-2 rounded-lg">
+        Select equipment
+      </div>
+
+      <!-- Class Dropdown -->
+      <div class="relative inline-block">
+        <div id="classButton" onclick="toggleDropdown('classMenu', 'classButton')" class="flex items-center space-x-2 bg-white border border-[#cbd2e1] rounded-2xl px-6 py-2 shadow font-nunito text-[#2a5ea8] text-lg leading-6 cursor-pointer select-none">
+          <span>Class</span>
+          <i class="fas fa-caret-down text-[#a3b1d1]"></i>
+        </div>
+        <ul id="classMenu" class="hidden absolute top-full left-0 mt-1 w-48 bg-white rounded-2xl border border-[#cbd2e1] shadow py-4 flex flex-col space-y-4 z-10 font-nunito text-[#2a5ea8] text-lg">
+          <li class="px-8 cursor-pointer hover:underline" onclick="selectOption('classButton', 'Mage', 'classMenu')">Mage</li>
+          <li class="px-8 cursor-pointer hover:underline" onclick="selectOption('classButton', 'Swordsman', 'classMenu')">Swordsman</li>
+        </ul>
+      </div>
+    </div>
+
+    <button onclick="Telegram.WebApp.close()" class="mt-10 px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow">
       Close
     </button>
 
     <script>
       Telegram.WebApp.ready();
       Telegram.WebApp.expand();
+
+      function toggleDropdownUI() {
+        document.getElementById('dropdownSection').classList.toggle('hidden');
+      }
+
+      function toggleDropdown(menuId, buttonId) {
+        const menu = document.getElementById(menuId);
+        const button = document.getElementById(buttonId);
+        const isHidden = menu.classList.contains('hidden');
+        document.querySelectorAll('ul[role="menu"]').forEach((ul) => ul.classList.add('hidden'));
+        document.querySelectorAll('div[aria-haspopup="true"]').forEach((btn) => btn.setAttribute('aria-expanded', 'false'));
+        if (isHidden) {
+          menu.classList.remove('hidden');
+          button.setAttribute('aria-expanded', 'true');
+        } else {
+          menu.classList.add('hidden');
+          button.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      function selectOption(buttonId, text, menuId) {
+        const button = document.getElementById(buttonId);
+        const menu = document.getElementById(menuId);
+        button.querySelector('span').textContent = text;
+        menu.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+      }
+
+      window.addEventListener('click', (e) => {
+        const ids = ['equipmentButton', 'equipmentMenu', 'classButton', 'classMenu'];
+        ids.forEach(id => {
+          const btn = document.getElementById(id);
+          if (btn && !btn.contains(e.target)) {
+            if (id.includes('Menu')) btn.classList.add('hidden');
+            else btn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
     </script>
   </body>
 </html>
